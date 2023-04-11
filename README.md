@@ -1,5 +1,5 @@
 ---
-title: RNMPRAC
+title: aRockyBot
 emoji: 🪨
 colorFrom: blue
 colorTo: green
