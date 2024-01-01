@@ -19,54 +19,50 @@ def check_2_strings(a: str, b: str):
 
 
 def get_name(
-    ans: str,
+    user_answer: str,
     feedback: str,
 ):
-    # global state.value["name"], state.value["url"], state.value["correct"], state.value["wrong"], state.value["skipped"], state.value["prevurl"], state.value["coft"], state.value["qnum"]
-    out = ""
-    fb = ""
-    stats = ""
+    answer_box_output = ""
+    feedback_to_user = ""
+    user_statistics = ""
     state.value["qnum"] += 1
-    if len(ans) >= 1:
-        ans = ans.strip()
-        deviance = check_2_strings(ans, state.value["name"])
-        if ans in ["s", "/", "skip", "n", "r"]:
-            fb += "The answer is: " + state.value["name"]
+    if len(user_answer) >= 1:
+        user_answer = user_answer.strip()
+        deviance = check_2_strings(user_answer, state.value["name"])
+        if user_answer in ["s", "/", "skip", "n", "r"]:
+            feedback_to_user += "The answer is: " + state.value["name"]
             state.value["skipped"] += 1
             state.value["prevurl"] = state.value["url"]
         elif deviance <= 26:
-            fb += f"""Correct! - The answer is: {state.value["name"]}"""
+            feedback_to_user += f"""Correct! - The answer is: {state.value["name"]}"""
 
-            # print("Before:", state.value["url"], state.value["prevurl"], state.value["url"] == state.value["prevurl"])
             if state.value["prevurl"] != state.value["url"]:
                 state.value["coft"] += 1
-            # print("after:", state.value["url"], state.value["prevurl"], state.value["url"] == state.value["prevurl"])
             state.value["name"], state.value["url"] = get_rock_name_url()
             state.value["correct"] += 1
-            # print("after2:", state.value["url"], state.value["prevurl"], state.value["url"] == state.value["prevurl"], "\n\n\n")
         else:
             state.value["wrong"] += 1
-            fb += f"\n### Wrong! The answer isn't {ans}. \n ### Press s, r, or n to see the answer."
+            feedback_to_user += f"\n### Wrong! The answer isn't {user_answer}. \n ### Press s, r, or n to see the answer."
             state.value["prevurl"] = state.value["url"]
 
-        stats = f"""
-Statistic | Value
----: | :---
-Correct | {state.value["correct"]}
-Wrong | {state.value["wrong"]} 
-Correct on first try | {state.value["coft"]}
-Skipped | {state.value["skipped"]}
-Total Rocks| {state.value["correct"] + state.value["wrong"] + state.value["skipped"]}
-          """
-        out = ""
+        user_statistics = f"""
+                        Statistic | Value
+                        ---: | :---
+                        Correct | {state.value["correct"]}
+                        Wrong | {state.value["wrong"]} 
+                        Correct on first try | {state.value["coft"]}
+                        Skipped | {state.value["skipped"]}
+                        Total Rocks| {state.value["correct"] + state.value["wrong"] + state.value["skipped"]}
+                        """
+        answer_box_output = ""
     else:
-        out = ans
-        stats = feedback
+        answer_box_output = user_answer
+        user_statistics = feedback
     return (
         state.value["url"],
-        out,
-        f"""## Question {state.value["qnum"]}:\n ### {fb}""",
-        stats,
+        answer_box_output,
+        f"""## Question {state.value["qnum"]}:\n ### {feedback_to_user}""",
+        user_statistics,
         rf"""### [Click here to research the rock](https://www.mindat.org/search.php?search={state.value["name"].strip().replace(" ", "%20")})""",
     )
 
