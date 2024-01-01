@@ -18,7 +18,7 @@ def check_2_strings(a: str, b: str):
     )
 
 
-def get_name(
+def update_app(
     user_answer: str,
     feedback: str,
 ):
@@ -105,7 +105,7 @@ with g.Blocks() as A:
                 f"""### [Click here to research the rock](https://www.mindat.org/search.php?search={state.value["name"].strip().replace(" ", "%20")})"""
             )
     inp.submit(
-        fn=get_name,
+        fn=update_app,
         inputs=[inp, stats],
         outputs=[
             img,
